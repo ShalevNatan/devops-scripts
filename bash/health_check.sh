@@ -73,10 +73,20 @@ check_cpu() {
                 echo "[CPU]     OK       — load ${CPU_CURRENT}"
         fi
 }
+check_process() {
+        local PROCESS="$1"
+        if pgrep -x "$PROCESS" > /dev/null; then
+                echo "[PROC]    OK       — $PROCESS is running"
+        else
+                echo "[PROC]    CRITICAL — $PROCESS is not running"
+                if [[ $STATUS -lt 2 ]]; then STATUS=2; fi
+        fi
+}
 
 check_disk
 check_memory
 check_cpu
+check_process "bash"
 
 echo "========================" 
 echo "Final STATUS: $STATUS"
