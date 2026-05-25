@@ -75,7 +75,7 @@ check_cpu() {
 }
 check_process() {
         local PROCESS="$1"
-        if pgrep -x "$PROCESS" > /dev/null; then
+	if pgrep -x "$PROCESS" > /dev/null; then
                 echo "[PROC]    OK       — $PROCESS is running"
         else
                 echo "[PROC]    CRITICAL — $PROCESS is not running"
@@ -86,7 +86,9 @@ check_process() {
 check_disk
 check_memory
 check_cpu
-check_process "bash"
+if [[ -n "$1" ]]; then
+	check_process "$1"
+fi
 
 echo "========================" 
 echo "Final STATUS: $STATUS"
